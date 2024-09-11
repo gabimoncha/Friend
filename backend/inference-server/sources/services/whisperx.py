@@ -1,11 +1,11 @@
 import torch
 import base64
 from io import BytesIO
-import requests
 import whisperx
 from sources.service import Service
 import torchaudio
 import tempfile
+from security import safe_requests
 
 class WhisperXService(Service):
     def __init__(self):
@@ -32,7 +32,7 @@ class WhisperXService(Service):
             file = base64.b64decode(data["contents"])
         elif "url" in data:
             yield { "status": "downloading" }
-            response = requests.get(data["url"])
+            response = safe_requests.get(data["url"])
             file = response.content
         else:
             yield { "status": "error", "message": "No audio file provided" }

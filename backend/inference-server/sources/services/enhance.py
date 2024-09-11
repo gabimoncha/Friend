@@ -2,8 +2,8 @@ from resemble_enhance.enhancer.inference import enhance
 import torchaudio
 import base64
 from io import BytesIO
-import requests
 from sources.service import Service
+from security import safe_requests
 
 class EnhanceService(Service):
     def __init__(self):
@@ -26,7 +26,7 @@ class EnhanceService(Service):
             file = BytesIO(base64.b64decode(data["contents"]))
         elif "url" in data:
             yield { "status": "downloading" }
-            response = requests.get(data["url"])
+            response = safe_requests.get(data["url"])
             file = BytesIO(response.content)
         else:
             yield { "status": "error", "message": "No audio file provided" }
