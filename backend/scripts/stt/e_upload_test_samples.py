@@ -12,7 +12,7 @@ def execute():
     for file in files:
         if file.endswith('.wav'):
             files = {'file': open(file, 'rb')}
-            response = requests.post(f'http://localhost:8000/samples/upload?uid={speaker_id}', files=files)
+            response = requests.post(f'http://localhost:8000/samples/upload?uid={speaker_id}', files=files, timeout=60)
             print(response.json())
 
 

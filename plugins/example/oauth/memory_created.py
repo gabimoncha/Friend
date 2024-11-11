@@ -169,7 +169,7 @@ def create_notion_row(notion_api_key: str, database_id: str, memory: Memory):
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Notion-Version': '2022-06-28'
-    })
+    }, timeout=60)
     print('create_notion_row:', resp.status_code, resp.json())
     # TODO: after, write inside the page the transcript and everything else.
     return resp.status_code == 200

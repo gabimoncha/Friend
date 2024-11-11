@@ -28,7 +28,7 @@ def weighted_rating(plugin):
 
 def get_plugins_data(uid: str, include_reviews: bool = False) -> List[Plugin]:
     # print('get_plugins_data', uid, include_reviews)
-    response = requests.get('https://raw.githubusercontent.com/BasedHardware/Omi/main/community-plugins.json')
+    response = requests.get('https://raw.githubusercontent.com/BasedHardware/Omi/main/community-plugins.json', timeout=60)
     if response.status_code != 200:
         return []
     user_enabled = set(get_enabled_plugins(uid))
@@ -86,7 +86,7 @@ def trigger_external_integrations(uid: str, memory: Memory) -> list:
         else:
             url += '?uid=' + uid
 
-        response = requests.post(url, json=memory_dict)  # TODO: failing?
+        response = requests.post(url, json=memory_dict, timeout=60)  # TODO: failing?
         if response.status_code != 200:
             print('Plugin integration failed', plugin.id, 'result:', response.content)
             return
@@ -130,7 +130,7 @@ def trigger_realtime_integrations(uid: str, token: str, segments: List[dict]) ->
             url += '?uid=' + uid
 
         try:
-            response = requests.post(url, json={"session_id": uid, "segments": segments})
+            response = requests.post(url, json={"session_id": uid, "segments": segments}, timeout=60)
             if response.status_code != 200:
                 print('trigger_realtime_integrations', plugin.id, 'result:', response.content)
                 return

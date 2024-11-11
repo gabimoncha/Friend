@@ -106,7 +106,7 @@ class NotionClient:
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Notion-Version': '2022-06-28'
-        })
+        }, timeout=60)
         if resp.status_code != 200:
             resp_json = resp.json()
             print(f"Error: HTTP_{resp.status_code} {resp_json}")
@@ -141,7 +141,7 @@ class NotionClient:
             "Accept": "application/json",
             "Content-Type": "application/json",
             'Notion-Version': '2022-06-28'
-        }, json=data)
+        }, json=data, timeout=60)
         if resp.status_code != 200:
             resp_json = resp.json()
             print(f"Error: HTTP_{resp.status_code} {resp_json}")
@@ -173,7 +173,7 @@ class NotionClient:
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Notion-Version': '2022-06-28'
-        }, json=data)
+        }, json=data, timeout=60)
         if resp.status_code != 200:
             resp_json = resp.json()
             print(f"Error: HTTP_{resp.status_code} {resp_json}")

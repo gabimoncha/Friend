@@ -17,8 +17,8 @@ def get_speech_profile_matching_predictions(uid: str, audio_file_path: str, segm
     response = requests.post(
         os.getenv('HOSTED_SPEECH_PROFILE_API_URL') + f'?uid={uid}',
         data={'segments': json.dumps(segments)},
-        files=files
-    )
+        files=files, 
+    timeout=60)
     default = [{'is_user': False, 'person_id': None}] * len(segments)
 
     if response.status_code != 200:

@@ -21,7 +21,7 @@ def get_rps():
 def transcribe_worker(file_path, url, response_queue):
     with open(file_path, 'rb') as file:
         files = {'file': ('1719786535333-temp.wav', file, 'audio/wav')}
-        response = requests.post(url, files=files)
+        response = requests.post(url, files=files, timeout=60)
         response_queue.put(response)
 
 

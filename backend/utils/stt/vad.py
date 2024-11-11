@@ -72,7 +72,7 @@ def vad_is_empty(file_path, return_segments: bool = False, cache: bool = False):
         # print('vad_is_empty file duration:', file_duration)
         with open(file_path, 'rb') as file:
             files = {'file': (file_path.split('/')[-1], file, 'audio/wav')}
-            response = requests.post(os.getenv('HOSTED_VAD_API_URL'), files=files)
+            response = requests.post(os.getenv('HOSTED_VAD_API_URL'), files=files, timeout=60)
             segments = response.json()
             if cache:
                 redis_db.set_generic_cache(caching_key, segments, ttl=60 * 60 * 24)

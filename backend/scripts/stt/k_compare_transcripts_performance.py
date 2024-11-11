@@ -396,7 +396,7 @@ def pyannote_diarize(file_path: str):
     webhook = 'https://camel-lucky-reliably.ngrok-free.app/webhook'
     signed_url = upload_postprocessing_audio(file_path)
     data = {'webhook': webhook, 'url': signed_url}
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(url, headers=headers, json=data, timeout=60)
     print(memory_id, response.json()['jobId'])
     # update diarization.json, and set jobId=memoryId
     with open('diarization.json', 'r') as f:

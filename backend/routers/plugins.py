@@ -17,7 +17,7 @@ def enable_plugin_endpoint(plugin_id: str, uid: str = Depends(auth.get_current_u
     if not plugin:
         raise HTTPException(status_code=404, detail='Plugin not found')
     if plugin.works_externally() and plugin.external_integration.setup_completed_url:
-        res = requests.get(plugin.external_integration.setup_completed_url + f'?uid={uid}')
+        res = requests.get(plugin.external_integration.setup_completed_url + f'?uid={uid}', timeout=60)
         print('enable_plugin_endpoint', res.status_code, res.content)
         if res.status_code != 200 or not res.json().get('is_setup_completed', False):
             raise HTTPException(status_code=400, detail='Plugin setup is not completed')

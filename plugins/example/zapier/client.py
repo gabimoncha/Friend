@@ -95,7 +95,7 @@ class ZapierClient:
             resp = requests.post(target_url, json=memory.model_dump(mode="json"), headers={
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-            })
+            }, timeout=60)
         except requests.exceptions.HTTPError:
             resp_text = f"{resp}"
             err = {
@@ -164,7 +164,7 @@ class FriendClient:
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'api-key': self.workflow_api_key,
-            })
+            }, timeout=60)
         except requests.exceptions.HTTPError:
             resp_text = f"{resp.text()}"
             err = {
@@ -216,7 +216,7 @@ class FriendClient:
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'api-key': self.workflow_api_key,
-            })
+            }, timeout=60)
         except requests.exceptions.HTTPError:
             resp_text = f"{resp.text()}"
             err = {

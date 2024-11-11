@@ -30,7 +30,7 @@ def diarize():
         'webhook': webhook,
         'url': file_to_base64_url('data/more/18-45-32-069108.wav'),
     }
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(url, headers=headers, json=data, timeout=60)
     print(response.json())
 
 
@@ -40,7 +40,7 @@ def voiceprint():
         "webhook": webhook,
         "url": file_to_base64_url('pyannote_void.wav'),
     }
-    response = requests.request("POST", url, json=payload, headers=headers)
+    response = requests.request("POST", url, json=payload, headers=headers, timeout=60)
     print(response.json())
 
 
@@ -57,7 +57,7 @@ def voice_identification():
             }
         ],
     }
-    response = requests.request("POST", url, json=payload, headers=headers)
+    response = requests.request("POST", url, json=payload, headers=headers, timeout=60)
 
 
 if __name__ == '__main__':
