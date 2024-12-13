@@ -3,6 +3,7 @@ import requests
 
 from models import WorkflowCreateMemory, Memory
 from .models import ZapierCreateMemory
+from security import safe_requests
 
 
 # """
@@ -212,7 +213,7 @@ class FriendClient:
         err = None
         url = f"{self.base_url}/v1/integrations/workflow/memories?uid={uid}&limit=1"
         try:
-            resp = requests.get(url, headers={
+            resp = safe_requests.get(url, headers={
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'api-key': self.workflow_api_key,

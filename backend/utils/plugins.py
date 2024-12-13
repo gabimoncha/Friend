@@ -24,6 +24,7 @@ from utils.llm import (
 )
 from database.vector_db import query_vectors_by_metadata
 import database.memories as memories_db
+from security import safe_requests
 
 PROACTIVE_NOTI_LIMIT_SECONDS = 30  # 1 noti / 30s
 
@@ -43,7 +44,7 @@ def get_github_docs_content(repo="BasedHardware/omi", path="docs/docs"):
 
     def get_contents(path):
         url = f"https://api.github.com/repos/{repo}/contents/{path}"
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
 
         if response.status_code != 200:
             print(f"Failed to fetch contents for {path}: {response.status_code}")
@@ -57,7 +58,7 @@ def get_github_docs_content(repo="BasedHardware/omi", path="docs/docs"):
         for item in contents:
             if item["type"] == "file" and (item["name"].endswith(".md") or item["name"].endswith(".mdx")):
                 # Get raw content for documentation files
-                raw_response = requests.get(item["download_url"], headers=headers)
+                raw_response = safe_requests.get(item["download_url"], headers=headers)
                 if raw_response.status_code == 200:
                     docs_content[item["path"]] = raw_response.text
 

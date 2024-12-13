@@ -2,8 +2,6 @@ import json
 import os
 from datetime import datetime, timezone
 from typing import List
-
-import requests
 from fastapi import APIRouter, HTTPException, Depends, UploadFile
 from fastapi.params import File, Form
 from ulid import ULID
@@ -17,6 +15,7 @@ from utils.apps import get_available_app_by_id, get_app_usage_history, get_app_m
 from utils.other import endpoints as auth
 from utils.other.storage import upload_plugin_logo
 from utils.plugins import get_plugins_data, get_plugins_data_from_db
+from security import safe_requests
 
 router = APIRouter()
 
@@ -28,7 +27,7 @@ def enable_plugin_endpoint(plugin_id: str, uid: str = Depends(auth.get_current_u
     if not plugin:
         raise HTTPException(status_code=404, detail='Plugin not found')
     if plugin.works_externally() and plugin.external_integration.setup_completed_url:
-        res = requests.get(plugin.external_integration.setup_completed_url + f'?uid={uid}')
+        res = safe_requests.get(plugin.external_integration.setup_completed_url + f'?uid={uid}')
         print('enable_plugin_endpoint', res.status_code, res.content)
         if res.status_code != 200 or not res.json().get('is_setup_completed', False):
             raise HTTPException(status_code=400, detail='Plugin setup is not completed')

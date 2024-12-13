@@ -2,11 +2,10 @@ import os
 from datetime import datetime, timezone
 from typing import List
 
-import requests
-
 from models.plugin import UsageHistoryType
 from utils.other.storage import storage_client
 from ._client import db
+from security import safe_requests
 
 # *****************************
 # ********** CRUD *************
@@ -39,7 +38,7 @@ def get_plugin_usage_history(plugin_id: str):
 
 
 def add_plugin_from_community_json(plugin_data: dict):
-    img = requests.get("https://raw.githubusercontent.com/BasedHardware/Omi/main/" + plugin_data['image'], stream=True)
+    img = safe_requests.get("https://raw.githubusercontent.com/BasedHardware/Omi/main/" + plugin_data['image'], stream=True)
     bucket = storage_client.bucket(omi_plugins_bucket)
     path = plugin_data['image'].split('/plugins/logos/')[1]
     blob = bucket.blob(path)
