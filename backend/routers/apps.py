@@ -2,7 +2,6 @@ import json
 import os
 from datetime import datetime, timezone
 from typing import List
-import requests
 from ulid import ULID
 from fastapi import APIRouter, Depends, Form, UploadFile, File, HTTPException, Header
 
@@ -20,6 +19,7 @@ from utils.notifications import send_notification
 from utils.other import endpoints as auth
 from models.app import App
 from utils.other.storage import upload_plugin_logo, delete_plugin_logo
+from security import safe_requests
 
 router = APIRouter()
 
@@ -267,7 +267,7 @@ def enable_app_endpoint(app_id: str, uid: str = Depends(auth.get_current_user_ui
         if app.private and app.uid != uid and not is_tester(uid):
             raise HTTPException(status_code=403, detail='You are not authorized to perform this action')
     if app.works_externally() and app.external_integration.setup_completed_url:
-        res = requests.get(app.external_integration.setup_completed_url + f'?uid={uid}')
+        res = safe_requests.get(app.external_integration.setup_completed_url + f'?uid={uid}')
         print('enable_app_endpoint', res.status_code, res.content)
         if res.status_code != 200 or not res.json().get('is_setup_completed', False):
             raise HTTPException(status_code=400, detail='App setup is not completed')

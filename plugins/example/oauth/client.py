@@ -2,6 +2,7 @@ import base64
 import os
 
 import requests
+from security import safe_requests
 
 
 # """
@@ -101,7 +102,7 @@ class NotionClient:
 
     def get_database(self, database_id: str, access_token: str):
         resp: requests.Response
-        resp = requests.get(f'https://api.notion.com/v1/databases/{database_id}', headers={
+        resp = safe_requests.get(f'https://api.notion.com/v1/databases/{database_id}', headers={
             'Authorization': f'Bearer {access_token}',
             'Content-Type': 'application/json',
             'Accept': 'application/json',

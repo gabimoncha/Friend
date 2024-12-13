@@ -1,9 +1,8 @@
 import os
 from typing import Optional
 
-import requests
-
 from models.memory import Geolocation
+from security import safe_requests
 
 
 def get_google_maps_location(latitude: float, longitude: float) -> Optional[Geolocation]:
@@ -11,7 +10,7 @@ def get_google_maps_location(latitude: float, longitude: float) -> Optional[Geol
     # TODO: cache this
     key = os.getenv('GOOGLE_MAPS_API_KEY')
     url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&key={key}"
-    response = requests.get(url)
+    response = safe_requests.get(url)
     data = response.json()
     print('get_google_maps_location', data)
     if data['status'] != 'OK' or not data.get('results'):
